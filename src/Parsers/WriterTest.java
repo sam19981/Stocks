@@ -17,7 +17,7 @@ import java.io.OutputStream;
 public class WriterTest implements xmlWriter {
 
   @Override
-  public void writeData(String File) throws ParserConfigurationException {
+  public int writeData(String File) throws ParserConfigurationException {
     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -29,12 +29,12 @@ public class WriterTest implements xmlWriter {
     rootElement.appendChild(doc.createElement("staff"));
 
     try (FileOutputStream output =
-                 new FileOutputStream("test.xml")) {
+                 new FileOutputStream("test.txt")) {
       writeXml(doc, output);
     } catch (IOException | TransformerException e) {
       e.printStackTrace();
     }
-
+    return 0;
   }
 
   private static void writeXml(Document doc,

@@ -4,12 +4,13 @@ import java.util.List;
 
 public interface User {
 
-  Portfolio getPortfolio();
+  Portfolio getPortfolio(String name);
 
   String getUserName();
 
   float computePortFolio();
 
+  Stock removeStock(Portfolio n, String a);
   Stock removeShare(Portfolio n, String a);
 
   void addPortfolio(Portfolio n);
