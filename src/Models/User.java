@@ -10,7 +10,7 @@ public interface User {
 
   float computePortFolio();
 
-  Share removeShare(Portfolio n, String a);
+  Stock removeShare(Portfolio n, String a);
 
   void addPortfolio(Portfolio n);
 

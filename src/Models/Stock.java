@@ -1,8 +1,9 @@
 package Models;
 
+import java.time.LocalDate;
 import java.util.Date;
 
-public interface Share {
+public interface Stock {
 
   String getStockName();
 
@@ -11,4 +12,8 @@ public interface Share {
   Date getPurchaseDate();
 
   float getPurchaseValue();
+
+  float getValue(LocalDate d);
+
+  String getStockSymbol();
 }

@@ -1,22 +1,23 @@
 package Models;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface Portfolio {
 
   String getPortfolioName();
 
-  List<Share> getAllShares();
+  List<Stock> getAllStocks();
 
-  float getPortfolioValue();
+  float getPortfolioValue(LocalDate d);
 
-  void addShare(Share A);
+  void addStock(Stock A);
 
-  float sellShare(Share A);
+  float sellStock(Stock A);
 
-  float sellAllShares();
+  float sellAllStocks();
 
-  Share getShare(String A);
+  Stock getStock(String A);
 
 
 }
