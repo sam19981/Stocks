@@ -8,6 +8,7 @@ public interface Portfolio {
   String getPortfolioName();
 
   List<Stock> getAllStocks();
+  List<Stock> getAllStock();
 
   float getPortfolioValue(LocalDate d);
 

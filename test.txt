@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<user>
+    <username>sam19981</username>
+    <portfolio>
+     <name> College Funds</name>
+     <stocks>
+     <share>
+     <name>Google</name>
+     <cost>10</cost>
+     <time>2022/05/01</time>
+     </share>
+     <share>
+          <name>Microsoft</name>
+          <cost>11</cost>
+          <time>2022/01/10</time>
+          </share>
+     </stocks>
+     </portfolio>
+
+      <portfolio>
+          <name> School Funds</name>
+          <stocks>
+          <share>
+          <name>Amazon</name>
+          <cost>10</cost>
+          <time>2022/05/01</time>
+          </share>
+          <share>
+               <name>Optum</name>
+               <cost>11</cost>
+               <time>2022/01/10</time>
+               </share>
+          </stocks>
+          </portfolio>
+</user>

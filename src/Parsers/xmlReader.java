@@ -1,4 +1,8 @@
 package Parsers;
 
-public interface xmlReader {
+import Models.User;
+
+public interface xmlReader  {
+
+  User readData(String Filename);
 }
