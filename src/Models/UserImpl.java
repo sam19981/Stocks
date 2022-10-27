@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserImpl implements User{
+  @Override
+  public Stock removeShare(Portfolio n, String a) {
+    return null;
+  }
 
   private List<Portfolio> portFolios;
   private String userName;

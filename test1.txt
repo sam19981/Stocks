@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<user>
+    <username>sam19981</username>
+    <portfolio id="College Funds">
+        <stock id="Google">
+            <cost>10.0</cost>
+            <quantity>14.0</quantity>
+            <time>2022-05-05</time>
+        </stock>
+        <stock id="Microsoft">
+            <cost>11.0</cost>
+            <quantity>13.0</quantity>
+            <time>2022-01-01</time>
+        </stock>
+    </portfolio>
+    <portfolio id="School Funds">
+        <stock id="Amazon">
+            <cost>19.0</cost>
+            <quantity>17.0</quantity>
+            <time>2022-05-05</time>
+        </stock>
+        <stock id="Microfocus">
+            <cost>11.0</cost>
+            <quantity>29.0</quantity>
+            <time>2022-01-01</time>
+        </stock>
+    </portfolio>
+</user>
