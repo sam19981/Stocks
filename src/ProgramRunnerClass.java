@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import Models.User;
 import Models.UserImpl;
 import Parsers.ReaderTest;
 import Models.Portfolio;
@@ -18,7 +19,13 @@ public class ProgramRunnerClass {
 
   public static void main(String[] args) throws ParserConfigurationException {
 //    ReaderTest A = new ReaderTest();
-//    A.readData("test.txt");
+//    User user = A.readData("test.txt");
+////    System.out.println("Just to stall");
+//
+//   WriterTest B = new WriterTest();
+//   B.writeData("test1.txt",user);
+
+
 //
 //    WriterTest Z = new WriterTest();
 //    Z.writeData("");

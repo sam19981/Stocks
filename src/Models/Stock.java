@@ -9,7 +9,7 @@ public interface Stock {
 
   float getQuantity();
 
-  Date getPurchaseDate();
+ LocalDate getPurchaseDate();
 
   float getPurchaseValue();
 

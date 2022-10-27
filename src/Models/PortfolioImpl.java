@@ -35,6 +35,12 @@ public class PortfolioImpl implements Portfolio{
       return this;
     }
 
+    public CustomerBuilder addStocks(Stock s)
+    {
+      this.stocks.add(s);
+      return this;
+    }
+
     public PortfolioImpl create() {
       return new PortfolioImpl(portfolioName, stocks);
     }
@@ -48,6 +54,11 @@ public class PortfolioImpl implements Portfolio{
   @Override
   public List<Stock> getAllStocks() {
     return stocks;
+  }
+
+  @Override
+  public List<Stock> getAllStock() {
+    return null;
   }
 
   @Override
