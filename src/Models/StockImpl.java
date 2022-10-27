@@ -3,24 +3,23 @@ package Models;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.Date;
 
 import Connections.Connection;
 import Connections.ConnectionImpl;
 
 public class StockImpl implements Stock {
   private final String shareName;
-  private final Date purchaseDate;
+  private final LocalDate purchaseDate;
   private final float purchaseValue;
   private final float quantity;
   private final String stockSymbol;
 
-  private StockImpl(String name, Date date, float value, float quant,
+  private StockImpl(String name, LocalDate date, float value, float q,
                     String symbol) {
     shareName = name;
     purchaseDate = date;
     purchaseValue = value;
-    quantity = quant;
+    quantity = q;
     stockSymbol = symbol;
   }
 
@@ -30,14 +29,14 @@ public class StockImpl implements Stock {
 
   public static class CustomerBuilder {
     private String shareName;
-    private Date purchaseDate;
+    private LocalDate purchaseDate;
     private float purchaseValue;
     private float quantity;
     private String stockSymbol;
 
     private CustomerBuilder() {
       shareName = "";
-      purchaseDate = new Date();
+      purchaseDate = LocalDate.now();
       purchaseValue = 0;
       quantity = 0;
       stockSymbol = "";
@@ -48,7 +47,7 @@ public class StockImpl implements Stock {
       return this;
     }
 
-    public CustomerBuilder purchaseDate(Date d) {
+    public CustomerBuilder purchaseDate(LocalDate d) {
       this.purchaseDate = d;
       return this;
     }
@@ -56,8 +55,8 @@ public class StockImpl implements Stock {
       this.purchaseValue = v;
       return this;
     }
-    public CustomerBuilder quantity(float quant) {
-      this.quantity = quant;
+    public CustomerBuilder quantity(float q) {
+      this.quantity = q;
       return this;
     }
     public CustomerBuilder stockSymbol(String symbol) {
@@ -81,7 +80,7 @@ public class StockImpl implements Stock {
   }
 
   @Override
-  public Date getPurchaseDate() {
+  public LocalDate getPurchaseDate() {
     return purchaseDate;
   }
 
@@ -98,9 +97,9 @@ public class StockImpl implements Stock {
   @Override
   public float getValue(LocalDate d) {
     Connection c =  new ConnectionImpl();
-    InputStream apiData = c.fetch(stockSymbol, d);
     StringBuilder output = new StringBuilder();
     try {
+    InputStream apiData = c.fetch(stockSymbol, d);
       int b;
       while ((b = apiData.read()) != -1) {
         output.append((char) b);

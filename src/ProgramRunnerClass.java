@@ -1,56 +1,40 @@
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import Models.UserImpl;
-import Parsers.ReaderTest;
-import Models.Portfolio;
-import Models.PortfolioImpl;
-import Models.Stock;
-import Models.StockImpl;
-import Parsers.WriterTest;
+import Controller.IController;
+import Controller.TextController;
+import Models.IModel;
+import Models.Model;
+import View.IView;
+import View.TextView;
 
 public class ProgramRunnerClass {
 
-  public static void main(String[] args) throws ParserConfigurationException {
-//    ReaderTest A = new ReaderTest();
-//    A.readData("test.txt");
-//
-//    WriterTest Z = new WriterTest();
-//    Z.writeData("");
-//
-//    Stock s1 = StockImpl.getBuilder().shareName("Google").purchaseValue(1000)
-//            .purchaseDate(new Date(2022, Calendar.JANUARY, 3))
-//            .quantity(10).stockSymbol("GOOG").create();
-//    Stock s2 = StockImpl.getBuilder().shareName("All").purchaseValue(1000)
-//            .purchaseDate(new Date(2022, Calendar.JANUARY, 10))
-//            .quantity(10).stockSymbol("ALL").create();
-//    List<Stock> s = new ArrayList<>();
-//    s.add(s1);
-//    s.add(s2);
-//    Portfolio p1 = PortfolioImpl.getBuilder().portfolioName("First_Portfolio").stocks(s).create();
-//    System.out.println(p1.getPortfolioValue(LocalDate.of(2022, 5, 3)));
-    WriterTest A = new WriterTest();
-    A.writeData("");
+  public static void main(String[] args) {
+    LocalTime time = LocalTime.now();
+    ZoneOffset zone = ZoneOffset.of("Z");
+    LocalDate date = LocalDate.of(2020, 2, 10);
+    long t = time.toEpochSecond(date, zone);
+    String stockSymbol = "GOOG";
+    try{
+    URL url = new URL("https://query1.finance.yahoo.com/v7/finance/download/"
+            +stockSymbol+"?symbol="+stockSymbol+"&period1="+t+"&period2="+t+"&interval=1d");
+      System.out.println(url.openStream());
+  } catch(MalformedURLException e) {
+    throw new RuntimeException("the API has either changed or no longer works");
+  } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
 
-    Stock s1 = StockImpl.getBuilder().shareName("Google").purchaseValue(1000)
-            .purchaseDate(new Date(2022, Calendar.JANUARY, 3))
-            .quantity(10).stockSymbol("GOOG").create();
-    Stock s2 = StockImpl.getBuilder().shareName("All").purchaseValue(1000)
-            .purchaseDate(new Date(2022, Calendar.JANUARY, 10))
-            .quantity(10).stockSymbol("ALL").create();
-    List<Stock> s = new ArrayList<>();
-    s.add(s1);
-    s.add(s2);
-    Portfolio p1 = PortfolioImpl.getBuilder().portfolioName("First_Portfolio").stocks(s).create();
-    List<Stock> stocks2 = new ArrayList<>();
-    stocks2.add(s1);
-    Portfolio p2 = PortfolioImpl.getBuilder().portfolioName("Second_Portfolio").stocks(stocks2).create();
-    System.out.println(p1.getPortfolioValue(LocalDate.of(2022, 5, 3)));
-    System.out.println(p2.getPortfolioValue(LocalDate.of(2022, 5, 3)));
+
+    IModel model = new Model();
+    IView view = new TextView(System.out);
+    IController controller = new TextController(model,System.in,view);
+    controller.go();
   }
 }
