@@ -66,9 +66,12 @@ public class PortfolioImpl implements Portfolio{
 
   @Override
   public float sellStock(Stock A) {
-    float res = A.getValue(LocalDate.now());
-    stocks.remove(A);
-    return res;
+    if(stocks.contains(A)) {
+      float res = A.getValue(LocalDate.now());
+      stocks.remove(A);
+      return res;
+    }
+    return -1;
   }
 
   @Override

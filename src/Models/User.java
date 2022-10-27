@@ -1,5 +1,6 @@
 package Models;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface User {
@@ -8,18 +9,19 @@ public interface User {
 
   String getUserName();
 
-  float computePortFolio();
+  float computeAllPortFolios(LocalDate d);
 
-  Stock removeStock(Portfolio n, String a);
-  Stock removeShare(Portfolio n, String a);
+  float computePortfolioValue(String PortfolioNam, LocalDate d);
+
+  Stock removeStock(Portfolio n, Stock a);
 
   void addPortfolio(Portfolio n);
 
-  void addShare(Portfolio A,String k);
+  void addStock(Portfolio A,Stock s);
 
   float sellPortfolio(Portfolio o);
 
-  List<Portfolio> getAllportfolios();
+  List<Portfolio> getAllPortfolios();
 
   Portfolio deletePortfolio(String name);
 
