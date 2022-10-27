@@ -5,6 +5,12 @@ import java.util.List;
 
 public interface User {
 
+  byte[] encryptPass(String password);
+
+  String decryptPass(byte[] encrypted);
+
+  byte[] encryptedPass();
+
   Portfolio getPortfolio(String name);
 
   String getUserName();
@@ -26,4 +32,6 @@ public interface User {
   Portfolio deletePortfolio(String name);
 
   List<Portfolio> removeAllPortfolios();
+
+
 }

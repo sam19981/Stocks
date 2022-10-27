@@ -22,5 +22,7 @@ public interface IView {
     void pleaseInputCorrectDetails(String d);
     void pleasePickADifferentUserName();
     void getPortfolioNames();
-    void getPortfolioNumber();
+    void getPortfolioNumber(String n);
+    void getStockforPortfolio(String pName);
+    void printString(String s);
 }

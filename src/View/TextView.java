@@ -14,7 +14,7 @@ public class TextView implements IView {
     }
 
     public void showString(String s) {
-        out.println("String: "+s);
+        out.println(s);
     }
 
     public void showPreLoginOptions() {
@@ -65,6 +65,7 @@ public class TextView implements IView {
         out.println("Menu: ");
         out.println("S: Do you want to see all the portfolios under your name?");
         out.println("C: Do you wish to compute the values of any portfolios?");
+        out.println("A: Do you wish to add new portfolios?");
         out.println("Q: Quit the program");
         out.print("Enter your choice: ");
     }
@@ -120,8 +121,18 @@ public class TextView implements IView {
     }
 
     @Override
-    public void getPortfolioNumber() {
+    public void getPortfolioNumber(String n) {
+        out.println("Please enter the name of portfolio "+n);
+    }
 
+    @Override
+    public void getStockforPortfolio(String pName) {
+        out.println("Please input the number of Stocks for Portfolio: "+ pName);
+    }
+
+    @Override
+    public void printString(String s) {
+        out.println(s);
     }
 
 }

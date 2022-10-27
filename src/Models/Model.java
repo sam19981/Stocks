@@ -2,6 +2,7 @@ package Models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -30,29 +31,32 @@ public class Model implements IModel {
     List<Portfolio> p = new ArrayList<>();
     p.add(p1);
     p.add(p2);
-    User u1 = UserImpl.CreateBuilder().setUserName("karthikjb10").addAllPortfolioList(p).create();
+    User u1 = UserImpl.CreateBuilder().setUserName("karthikjb10").setPassword("karthik123").addAllPortfolioList(p).create();
 
     userNames.add(u1.getUserName());
     users.add(u1);
   }
 
   @Override
-  public int createUser(String username) {
-    User user = UserImpl.CreateBuilder().setUserName(username).create();
+  public int createUser(String username, String password) {
+    User user = UserImpl.CreateBuilder().setUserName(username).setPassword(password).create();
     if(userNames.contains(username)){
       return -1;
     }
     users.add(user);
+    userNames.add(username);
     currentUser = user;
     return 0;
   }
 
   @Override
-  public int setUser(String username) {
+  public int setUser(String username, String password) {
     for(User user: users) {
       if(user.getUserName().equals(username)) {
-        currentUser = user;
-        return 0;
+        if(Arrays.equals(user.encryptedPass(), user.encryptPass(password))) {
+          currentUser = user;
+          return 0;
+        }
       }
     }
     return -1;
@@ -91,6 +95,26 @@ public class Model implements IModel {
       return Integer.parseInt(number);
     }
     return -1;
+  }
+
+  @Override
+  public void addPortfolios(String PortfolioName) {
+    Portfolio p = PortfolioImpl.getBuilder().portfolioName(PortfolioName).create();
+    currentUser.addPortfolio(p);
+  }
+
+  @Override
+  public Stock createStock(String sName, String quantity, String date, String month, String year, String value, String symbol) {
+    return StockImpl.getBuilder().shareName(sName)
+            .quantity(Float.parseFloat(quantity))
+            .purchaseDate(LocalDate.of(Integer.parseInt(year),Integer.parseInt(month), Integer.parseInt(date)))
+            .purchaseValue(Float.parseFloat(value))
+            .stockSymbol(symbol).create();
+  }
+
+  @Override
+  public void addStock(Portfolio p, Stock A) {
+    p.addStock(A);
   }
 
 

@@ -3,25 +3,64 @@ package Models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.security.Key;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 public class UserImpl implements User{
-  @Override
-  public Stock removeShare(Portfolio n, String a) {
-    return null;
-  }
-
   private List<Portfolio> portFolios;
   private String userName;
+  private byte[] password;
 
-  public UserImpl(String userName,List<Portfolio> portFolios)
+  public UserImpl(String userName,List<Portfolio> portFolios, String pass)
   {
     this.userName = userName;
     this.portFolios = portFolios;
+    this.password = encryptPass(pass);
   }
 
-  public UserImpl()
-  {
+  @Override
+  public byte[] encryptPass(String password) {
+    byte[] encrypted = new byte[1000];
+    try
+    {
+      String key = "Bar12345Bar12345"; // 128-bit key
+      // Create key and cipher
+      Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
+      Cipher cipher = Cipher.getInstance("AES");
+      // encrypt the text
+      cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+      encrypted = cipher.doFinal(password.getBytes());
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+    }
+    return encrypted;
+  }
 
+  @Override
+  public String decryptPass(byte[] encrypted) {
+    String decrypted = "";
+    try {
+      String key = "Bar12345Bar12345"; // 128-bit key
+      // Create key and cipher
+      Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
+      Cipher cipher = Cipher.getInstance("AES");
+      cipher.init(Cipher.DECRYPT_MODE, aesKey);
+      decrypted = new String(cipher.doFinal(encrypted));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return decrypted;
+  }
+
+  @Override
+  public byte[] encryptedPass() {
+    return password;
+  }
+
+  public UserImpl() {
   }
 
   @Override
@@ -128,16 +167,25 @@ public class UserImpl implements User{
   {
     String username;
     List<Portfolio> portfolioList;
+    String password;
 
     userBuilder()
     {
       username ="";
       portfolioList = new ArrayList<>();
+      password = "";
     }
+
 
    public userBuilder setUserName(String username)
     {
       this.username = username;
+      return this;
+    }
+
+    public userBuilder setPassword(String password)
+    {
+      this.password = password;
       return this;
     }
 
@@ -154,8 +202,9 @@ public class UserImpl implements User{
     }
 
     public UserImpl create(){
-      return new UserImpl(this.username,this.portfolioList);
+      return new UserImpl(this.username,this.portfolioList, this.password);
     }
 
   }
+
 }

@@ -16,7 +16,7 @@ public class ConnectionImpl implements Connection
   public InputStream fetch(String stockSymbol, LocalDate date) {
     try {
       LocalTime time = LocalTime.now();
-      ZoneOffset zone = ZoneOffset.of("Z");
+      ZoneOffset zone = ZoneOffset.of("-04:00");
       if(date.getDayOfWeek()== DayOfWeek.SATURDAY){
         date = date.minusDays(1);
       }
