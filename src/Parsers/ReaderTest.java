@@ -89,7 +89,7 @@ public class ReaderTest implements xmlReader{
             if (nNode1.getNodeType() == Node.ELEMENT_NODE)
             {Element eElement1 = (Element) nNode1;
               System.out.println("Stock Name :" + eElement1.getAttribute("id"));
-              stock1.stockSymbol(eElement1.getAttribute("id"));
+              stock1.shareName(eElement1.getAttribute("id"));
               NodeList a = eElement1.getChildNodes();
               for (int k = 0; k < a.getLength(); k++)
               {

@@ -1,21 +1,29 @@
 package Models;
 
+import java.io.Reader;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import Parsers.ReaderTest;
+import Parsers.WriterTest;
+
 public class Model implements IModel {
+  private final WriterTest write;
   private final List<User> users;
   private final HashSet<String> userNames;
   private User currentUser;
 
   public Model() {
+    write = new WriterTest();
     userNames = new HashSet<>();
     users = new ArrayList<>();
 
-    Stock s1 = StockImpl.getBuilder().shareName("Google").purchaseValue(1000)
+    /*Stock s1 = StockImpl.getBuilder().shareName("Google").purchaseValue(1000)
             .purchaseDate(LocalDate.of(2002, 1, 3))
             .quantity(10).stockSymbol("GOOG").create();
     Stock s2 = StockImpl.getBuilder().shareName("All").purchaseValue(1000)
@@ -32,7 +40,9 @@ public class Model implements IModel {
     p.add(p1);
     p.add(p2);
     User u1 = UserImpl.CreateBuilder().setUserName("karthikjb10").setPassword("karthik123").addAllPortfolioList(p).create();
-
+*/
+    ReaderTest r = new ReaderTest();
+    User u1 = r.readData("test.txt");
     userNames.add(u1.getUserName());
     users.add(u1);
   }
@@ -98,9 +108,15 @@ public class Model implements IModel {
   }
 
   @Override
-  public void addPortfolios(String PortfolioName) {
+  public void addPortfolios(String PortfolioName)  {
     Portfolio p = PortfolioImpl.getBuilder().portfolioName(PortfolioName).create();
     currentUser.addPortfolio(p);
+    try {
+      write.writeData("test.txt", currentUser);
+    }
+    catch(ParserConfigurationException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Override
@@ -115,6 +131,12 @@ public class Model implements IModel {
   @Override
   public void addStock(Portfolio p, Stock A) {
     p.addStock(A);
+    try {
+      write.writeData("test.txt", currentUser);
+    }
+    catch(ParserConfigurationException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
 

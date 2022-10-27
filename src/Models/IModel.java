@@ -3,6 +3,8 @@ package Models;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 public interface IModel {
   int createUser(String username, String password);
   int setUser(String username, String password);
@@ -13,5 +15,5 @@ public interface IModel {
   void addPortfolios(String PortfolioName);
   Stock createStock(String sName, String quantity, String date, String month, String year,
                    String value, String symbol);
-  void addStock(Portfolio p, Stock A);
+  void addStock(Portfolio p, Stock A) ;
 }

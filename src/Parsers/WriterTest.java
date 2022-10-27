@@ -40,7 +40,7 @@ public class WriterTest implements xmlWriter {
     Element name3;
     Element name4;
     Element name5;
-    List<Portfolio> portfolioList = data.getAllportfolios();
+    List<Portfolio> portfolioList = data.getAllPortfolios();
     for(int i=0;i< portfolioList.size();i++)
     {
       Portfolio temp = portfolioList.get(i);

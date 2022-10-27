@@ -22,51 +22,53 @@ public class TextController implements IController{
 
     @Override
     public void go() {
-        view.showPreLoginOptions();
-        String option = in.nextLine();
-        boolean quit = false;
-        switch (option) {
-            case "N":
-                while(!quit) {
-                    view.showStringEntry();
-                    String input = in.nextLine();
-                    view.showString("Please enter your password");
-                    String pass = in.nextLine();
-                    if(model.createUser(input, pass)!=-1) {
-                        quit = true;
-                        view.showDateEntryOptions();
-                        getInputStyle();
-                        view.displayPortfolios(model.getUserPortFolios());
+        boolean mainQuit = false;
+        while(!mainQuit) {
+            view.showPreLoginOptions();
+            String option = in.nextLine();
+            boolean quit = false;
+            switch (option) {
+                case "N":
+                    while (!quit) {
+                        view.showStringEntry();
+                        String input = in.nextLine();
+                        view.showString("Please enter your password");
+                        String pass = in.nextLine();
+                        if (model.createUser(input, pass) != -1) {
+                            quit = true;
+                            view.showDateEntryOptions();
+                            getInputStyle();
+                            view.displayPortfolios(model.getUserPortFolios());
+                        } else {
+                            view.pleasePickADifferentUserName();
+                        }
                     }
-                    else {
-                        view.pleasePickADifferentUserName();
-                    }
-                }
-                break;
+                    break;
 
-            case "E":
-                while(!quit) {
-                    view.showStringEntry();
-                    String userName = in.nextLine();
-                    view.showString("Please enter your password");
-                    String pass = in.nextLine();
-                    if (model.setUser(userName, pass) != -1) {
-                        quit = true;
-                        view.showUserDetailsFetched();
-                        view.showUserOperations();
-                        String operation = in.nextLine();
-                        performUserOperation(operation);
+                case "E":
+                    while (!quit) {
+                        view.showStringEntry();
+                        String userName = in.nextLine();
+                        view.showString("Please enter your password");
+                        String pass = in.nextLine();
+                        if (model.setUser(userName, pass) != -1) {
+                            quit = true;
+                            view.showUserDetailsFetched();
+                            view.showUserOperations();
+                            String operation = in.nextLine();
+                            performUserOperation(operation);
+                        } else {
+                            view.pleaseInputCorrectDetails("Name/Password");
+                        }
                     }
-                    else {
-                        view.pleaseInputCorrectDetails("Name/Password");
-                    }
-                }
-                break;
+                    break;
 
-            case "Q":
-                return;
-            default:
-                view.showOptionError();
+                case "Q":
+                    mainQuit = true;
+                    break;
+                default:
+                    view.showOptionError();
+            }
         }
     }
 

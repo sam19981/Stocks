@@ -57,11 +57,6 @@ public class PortfolioImpl implements Portfolio{
   }
 
   @Override
-  public List<Stock> getAllStock() {
-    return null;
-  }
-
-  @Override
   public float getPortfolioValue(LocalDate d) {
     float total = 0;
     for (Stock stock : stocks) {
