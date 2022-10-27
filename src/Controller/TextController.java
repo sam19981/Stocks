@@ -34,13 +34,19 @@ public class TextController implements IController{
                         String input = in.nextLine();
                         view.showString("Please enter your password");
                         String pass = in.nextLine();
-                        if (model.createUser(input, pass) != -1) {
+                        int status = model.createUser(input, pass);
+                        if (status >= 0) {
                             quit = true;
                             view.showDateEntryOptions();
                             getInputStyle();
                             view.displayPortfolios(model.getUserPortFolios());
-                        } else {
+                            view.showUserDetailsFetched();
+                            performUserOperation();
+                        } else if(status==-1) {
                             view.pleasePickADifferentUserName();
+                        }
+                        else if(status==-2) {
+                            view.pleaseEnterAValidPassword();
                         }
                     }
                     break;
@@ -54,9 +60,7 @@ public class TextController implements IController{
                         if (model.setUser(userName, pass) != -1) {
                             quit = true;
                             view.showUserDetailsFetched();
-                            view.showUserOperations();
-                            String operation = in.nextLine();
-                            performUserOperation(operation);
+                            performUserOperation();
                         } else {
                             view.pleaseInputCorrectDetails("Name/Password");
                         }
@@ -141,40 +145,47 @@ public class TextController implements IController{
     }
 
     @Override
-    public void performUserOperation(String input){
-        switch(input){
-            case "S":
-                view.displayPortfolios(model.getUserPortFolios());
-                break;
-            case "C":
-                boolean quit = false;
-                while(!quit) {
+    public void performUserOperation() {
+        boolean mainQuit = false;
+        while (!mainQuit) {
+            view.showUserOperations();
+            String operation = in.nextLine();
+            switch (operation) {
+                case "S":
                     view.displayPortfolios(model.getUserPortFolios());
-                    view.fetchPortfolioForComputation();
-                    String PortfolioName = in.nextLine();
-                    view.fetchDate();
-                    String date = in.nextLine();
-                    view.fetchMonth();
-                    String month = in.nextLine();
-                    view.fetchYear();
-                    String year = in.nextLine();
-                    float res = model.computePortfolioValues(PortfolioName, model.createValidDate(year, month, date));
-                    if(res!=-1){
-                        quit = true;
-                        view.displayString(String.valueOf(res));
+                    break;
+                case "C":
+                    boolean quit = false;
+                    while (!quit) {
+                        view.displayPortfolios(model.getUserPortFolios());
+                        view.fetchPortfolioForComputation();
+                        String PortfolioName = in.nextLine();
+                        view.fetchDate();
+                        String date = in.nextLine();
+                        view.fetchMonth();
+                        String month = in.nextLine();
+                        view.fetchYear();
+                        String year = in.nextLine();
+                        float res = model.computePortfolioValues(PortfolioName, model.createValidDate(year, month, date));
+                        if (res != -1) {
+                            quit = true;
+                            view.displayString(String.valueOf(res));
+                        } else {
+                            view.pleaseInputCorrectDetails("Details");
+                        }
                     }
-                    else {
-                        view.pleaseInputCorrectDetails("Details");
-                    }
-                }
-                break;
-            case "A":
-                getPortfolioInformation();
-                getStocksInformation();
-                view.displayPortfolios(model.getUserPortFolios());
-                break;
-            default:
-                view.showOptionError();
+                    break;
+                case "A":
+                    getPortfolioInformation();
+                    getStocksInformation();
+                    view.displayPortfolios(model.getUserPortFolios());
+                    break;
+                case "B":
+                    mainQuit = true;
+                    break;
+                default:
+                    view.showOptionError();
+            }
         }
     }
 

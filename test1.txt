@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <user>
-    <username>kart67</username>
-    <portfolio id="kjhyy">
+    <username>ks123</username>
+    <portfolio id="College">
         <stock id="GOOG">
             <cost>123.0</cost>
-            <quantity>20.0</quantity>
-            <time>2020-03-03</time>
+            <quantity>2.0</quantity>
+            <time>2020-03-10</time>
+        </stock>
+        <stock id="IBM">
+            <cost>23.0</cost>
+            <quantity>2.0</quantity>
+            <time>2020-03-20</time>
+        </stock>
+    </portfolio>
+    <portfolio id="Emergency">
+        <stock id="MSFT">
+            <cost>23.0</cost>
+            <quantity>2.0</quantity>
+            <time>2020-03-20</time>
         </stock>
     </portfolio>
 </user>

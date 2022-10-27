@@ -10,13 +10,13 @@ import javax.crypto.spec.SecretKeySpec;
 public class UserImpl implements User{
   private List<Portfolio> portFolios;
   private String userName;
-  private byte[] password;
+  private String password;
 
   public UserImpl(String userName,List<Portfolio> portFolios, String pass)
   {
     this.userName = userName;
     this.portFolios = portFolios;
-    this.password = encryptPass(pass);
+    this.password = pass;
   }
 
   @Override
@@ -56,7 +56,7 @@ public class UserImpl implements User{
   }
 
   @Override
-  public byte[] encryptedPass() {
+  public String encryptedPass() {
     return password;
   }
 
@@ -202,7 +202,10 @@ public class UserImpl implements User{
     }
 
     public UserImpl create(){
-      return new UserImpl(this.username,this.portfolioList, this.password);
+      if(this.username.equals("")) {
+        return null;
+      }
+      return new UserImpl(this.username, this.portfolioList, this.password);
     }
 
   }

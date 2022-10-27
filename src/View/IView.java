@@ -17,6 +17,9 @@ public interface IView {
     void fetchPortfolioForComputation();
     void displayString(String i);
     void fetchDate();
+
+    void pleaseEnterAValidPassword();
+
     void fetchYear();
     void fetchMonth();
     void pleaseInputCorrectDetails(String d);
@@ -25,4 +28,5 @@ public interface IView {
     void getPortfolioNumber(String n);
     void getStockforPortfolio(String pName);
     void printString(String s);
+    void createSpace();
 }

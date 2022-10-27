@@ -14,7 +14,6 @@ public class StockImpl implements Stock {
   private final float quantity;
   private final String stockSymbol;
 
-
   private StockImpl(String name, LocalDate date, float value, float q,
                     String symbol) {
     shareName = name;

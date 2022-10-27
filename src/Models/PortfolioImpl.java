@@ -2,6 +2,7 @@ package Models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class PortfolioImpl implements Portfolio{
@@ -60,7 +61,7 @@ public class PortfolioImpl implements Portfolio{
   public float getPortfolioValue(LocalDate d) {
     float total = 0;
     for (Stock stock : stocks) {
-      total += stock.getValue(d);
+      total += stock.getValue(d)*stock.getQuantity();
     }
     return total;
   }

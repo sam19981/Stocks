@@ -9,7 +9,7 @@ public interface User {
 
   String decryptPass(byte[] encrypted);
 
-  byte[] encryptedPass();
+  String encryptedPass();
 
   Portfolio getPortfolio(String name);
 

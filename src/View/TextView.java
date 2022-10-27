@@ -19,6 +19,7 @@ public class TextView implements IView {
 
     public void showPreLoginOptions() {
         //print the UI
+        createSpace();
         out.println("Menu: ");
         out.println("N: Are you a new user?");
         out.println("E: Are you an existing user?");
@@ -66,12 +67,13 @@ public class TextView implements IView {
         out.println("S: Do you want to see all the portfolios under your name?");
         out.println("C: Do you wish to compute the values of any portfolios?");
         out.println("A: Do you wish to add new portfolios?");
-        out.println("Q: Quit the program");
+        out.println("B: Go back to the previous menu");
         out.print("Enter your choice: ");
     }
 
     @Override
     public void displayPortfolios(List<Portfolio> portfolio) {
+        out.println("These are your Portfolio details:");
         for(Portfolio p: portfolio) {
             out.println(p.getPortfolioName());
             List<Stock> Stocks = p.getAllStocks();
@@ -111,6 +113,11 @@ public class TextView implements IView {
     }
 
     @Override
+    public void pleaseEnterAValidPassword() {
+        out.println("Please enter a valid password");
+    }
+
+    @Override
     public void fetchYear() {
         out.println("Please input the year for computation");
     }
@@ -133,6 +140,13 @@ public class TextView implements IView {
     @Override
     public void printString(String s) {
         out.println(s);
+    }
+
+    @Override
+    public void createSpace() {
+        for(int i=0; i<5;i++) {
+            out.println();
+        }
     }
 
 }
