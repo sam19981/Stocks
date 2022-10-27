@@ -1,6 +1,5 @@
 package Models;
 
-import java.io.Reader;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,17 +8,17 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import Parsers.ReaderTest;
-import Parsers.WriterTest;
+import Parsers.UserXmlReaderImpl;
+import Parsers.UserXmlWriterImpl;
 
 public class Model implements IModel {
-  private final WriterTest write;
+  private final UserXmlWriterImpl write;
   private final List<User> users;
   private final HashSet<String> userNames;
   private User currentUser;
 
   public Model() {
-    write = new WriterTest();
+    write = new UserXmlWriterImpl();
     userNames = new HashSet<>();
     users = new ArrayList<>();
 
@@ -41,7 +40,7 @@ public class Model implements IModel {
     p.add(p2);
     User u1 = UserImpl.CreateBuilder().setUserName("karthikjb10").setPassword("karthik123").addAllPortfolioList(p).create();
 */
-    ReaderTest r = new ReaderTest();
+    UserXmlReaderImpl r = new UserXmlReaderImpl();
     User u1 = r.readData("test.txt");
     userNames.add(u1.getUserName());
     users.add(u1);
