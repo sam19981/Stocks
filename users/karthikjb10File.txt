@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<user>
+    <username>karthikjb10</username>
+    <portfolio id="Emergency">
+        <stock id="GOOG">
+            <cost>67.0695</cost>
+            <quantity>20.0</quantity>
+            <time>2020/03/03</time>
+            <symbol>GOOG</symbol>
+        </stock>
+    </portfolio>
+    <portfolio id="Microsoft">
+        <stock id="MSFT">
+            <cost>119.97</cost>
+            <quantity>20.0</quantity>
+            <time>2019/04/03</time>
+            <symbol>MSFT</symbol>
+        </stock>
+    </portfolio>
+</user>

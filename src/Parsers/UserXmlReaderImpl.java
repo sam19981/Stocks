@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashSet;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -24,13 +25,17 @@ import Models.StockImpl;
 import Models.User;
 import Models.UserImpl;
 
-public class ReaderTest implements xmlReader{
+public class UserXmlReaderImpl implements xmlReader{
 
+  final String userName= "username";
+  final String portfolio = "portfolio";
   @Override
-  public User readData(String Filename) {
+  public User readData(String Filename, String password) {
     UserImpl.userBuilder user = UserImpl.CreateBuilder();
 
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+    HashSet<String> hashMap = new HashSet<String>();
 
 
     try {
@@ -49,6 +54,9 @@ public class ReaderTest implements xmlReader{
       // optional, but recommended
       // http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
       doc.getDocumentElement().normalize();
+//      System.out.println("Root Element :" + doc.getDocumentElement().getNodeName());
+//      System.out.println("------");
+      NodeList root = doc.getChildNodes();
 
       String expression3 = "/user/username";
       XPath xPath3 =  XPathFactory.newInstance().newXPath();
@@ -56,6 +64,7 @@ public class ReaderTest implements xmlReader{
               doc, XPathConstants.NODESET);
       Node n = nodeList3.item(0);
       user.setUserName(n.getTextContent());
+      user.setPassword(password);
       String expression = "/user/portfolio";
       XPath xPath =  XPathFactory.newInstance().newXPath();
       NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(
@@ -63,12 +72,15 @@ public class ReaderTest implements xmlReader{
       for (int i = 0; i < nodeList.getLength(); i++) {
         newPortfolio= PortfolioImpl.getBuilder();
         Node nNode = nodeList.item(i);
+//        System.out.println("\nCurrent Element :" + nNode.getNodeName());
         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
           Element eElement = (Element) nNode;
+//          System.out.println("Portfolio Name :" + eElement.getAttribute("id"));
           String idName = eElement.getAttribute("id");
           newPortfolio.portfolioName(idName);
           /////////////////////////////////////////////////////////////////////////////
           String expression1 = "/user/portfolio"+"[@id='"+idName+"']/stock";
+//          System.out.println(expression1);
           XPath xPath1 =  XPathFactory.newInstance().newXPath();
           NodeList nodeList1 = (NodeList) xPath1.compile(expression1).evaluate(
                   doc, XPathConstants.NODESET);
@@ -76,8 +88,10 @@ public class ReaderTest implements xmlReader{
           for (int j = 0; j < nodeList1.getLength(); j++)
           {
             Node nNode1 = nodeList1.item(j);
+//            System.out.println("\nCurrent Element :" + nNode1.getAttributes());
             if (nNode1.getNodeType() == Node.ELEMENT_NODE)
             {Element eElement1 = (Element) nNode1;
+//              System.out.println("Stock Name :" + eElement1.getAttribute("id"));
               stock1.shareName(eElement1.getAttribute("id"));
               NodeList a = eElement1.getChildNodes();
               for (int k = 0; k < a.getLength(); k++)
@@ -93,13 +107,22 @@ public class ReaderTest implements xmlReader{
                   stock1.purchaseDate(LocalDate.of(Integer.parseInt(yymmdd[0]),
                           Integer.parseInt(yymmdd[1]),Integer.parseInt(yymmdd[1])));
                 }
+                else if(currentode1.getNodeName().equals("symbol"))
+                {
+                  stock1.stockSymbol(currentode1.getTextContent());
+                }
                 }
               newPortfolio.addStocks(stock1.create());
             }
           }
 
         }
-        user.addPortfolioList(newPortfolio.create());
+        if(!hashMap.contains(newPortfolio.getportfolioName()))
+        {user.addPortfolioList(newPortfolio.create());
+        hashMap.add(newPortfolio.getportfolioName());
+        }
+
+
       }
 
 

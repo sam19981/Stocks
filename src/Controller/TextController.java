@@ -17,7 +17,6 @@ public class TextController implements IController{
         this.model = model;
         this.view = view;
         this.in = new Scanner(in);
-
     }
 
     @Override
@@ -117,28 +116,77 @@ public class TextController implements IController{
 
     @Override
     public void getStocksInformation() {
-        List<Portfolio> portfolios = model.getUserPortFolios();
-        for(Portfolio p: portfolios) {
-            if(p.getAllStocks().isEmpty()) {
-                view.getStockforPortfolio(p.getPortfolioName());
-                String number = in.nextLine();
-                for (int i = 0; i < Integer.parseInt(number); i++) {
-                    view.printString("Please enter the Stock Name");
-                    String sName = in.nextLine();
-                    view.printString("Please enter the quantity");
-                    String quantity = in.nextLine();
-                    view.printString("Please enter the purchase Date");
-                    String date = in.nextLine();
-                    view.printString("Please enter the purchase Month");
-                    String month = in.nextLine();
-                    view.printString("Please enter the purchase Year");
-                    String year = in.nextLine();
-                    view.printString("Please enter the purchase value");
-                    String value = in.nextLine();
-                    view.printString("Please enter the stock symbol");
-                    String symbol = in.nextLine();
-                    model.addStock(p, model.createStock(sName, quantity,
-                            date, month, year, value, symbol));
+        boolean mainQuit = false;
+        String year="", month="", date="";
+        String quantity = "0";
+        while(!mainQuit) {
+            List<Portfolio> portfolios = model.getUserPortFolios();
+            for (Portfolio p : portfolios) {
+                if (p.getAllStocks().isEmpty()) {
+                    view.getStockforPortfolio(p.getPortfolioName());
+                    String number = in.nextLine();
+                    for (int i = 0; i < Integer.parseInt(number); i++) {
+                        view.pleaseEnterString("Stock Name");
+                        String sName = in.nextLine();
+                        boolean quit = false;
+                        while(!quit) {
+                            view.pleaseEnterString("quantity");
+                            quantity = in.nextLine();
+                            if(model.checkValidNumber(quantity)>=0){
+                                quit = true;
+                            }
+                            else{
+                                view.pleaseInputCorrectDetails("Quantity");
+                            }
+                        }
+                        boolean dateQuit = false;
+                        while(!dateQuit) {
+                            quit = false;
+                            while (!quit) {
+                                view.pleaseEnterString("purchase Date");
+                                date = in.nextLine();
+                                if (model.checkValidNumber(date) >= 0) {
+                                    quit = true;
+                                }
+                                else{
+                                    view.pleaseInputCorrectDetails("Date");
+                                }
+                            }
+                            quit = false;
+                            while (!quit) {
+                                view.pleaseEnterString("purchase Month");
+                                month = in.nextLine();
+                                if (model.checkValidNumber(month) >= 0) {
+                                    quit = true;
+                                }
+                                else{
+                                    view.pleaseInputCorrectDetails("Month");
+                                }
+                            }
+                            quit = false;
+                            while (!quit) {
+                                view.pleaseEnterString("purchase Year");
+                                year = in.nextLine();
+                                if (model.checkValidNumber(year) >= 0) {
+                                    quit = true;
+                                }
+                                else{
+                                    view.pleaseInputCorrectDetails("Year");
+                                }
+                            }
+                            if(model.createValidDate(year, month, date)!=null) {
+                                dateQuit = true;
+                            }
+                            else{
+                                view.pleaseInputCorrectDetails("Date");
+                            }
+                        }
+                        view.pleaseEnterString("stock symbol");
+                        String symbol = in.nextLine();
+                        model.addStock(p, model.createStock(sName, quantity,
+                                date, month, year, symbol));
+                        mainQuit = true;
+                    }
                 }
             }
         }

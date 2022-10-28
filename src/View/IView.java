@@ -28,5 +28,8 @@ public interface IView {
     void getPortfolioNumber(String n);
     void getStockforPortfolio(String pName);
     void printString(String s);
-    void createSpace();
+
+  void pleaseEnterString(String s);
+
+  void createSpace();
 }

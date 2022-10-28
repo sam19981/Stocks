@@ -143,10 +143,15 @@ public class TextView implements IView {
     }
 
     @Override
+    public void pleaseEnterString(String s) {
+        out.println("Please enter the "+s);
+    }
+
+    @Override
     public void createSpace() {
-        for(int i=0; i<5;i++) {
-            out.println();
-        }
+        out.println();
+        out.println("-------------------");
+        out.println();
     }
 
 }

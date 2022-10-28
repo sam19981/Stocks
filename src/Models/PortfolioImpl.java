@@ -21,6 +21,11 @@ public class PortfolioImpl implements Portfolio{
     private String portfolioName;
     private List<Stock> stocks;
 
+    public String getportfolioName()
+    {
+      return this.portfolioName;
+    }
+
     private CustomerBuilder() {
       portfolioName = "";
       stocks = new ArrayList<>();

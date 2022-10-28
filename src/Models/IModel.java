@@ -13,7 +13,7 @@ public interface IModel {
   LocalDate createValidDate(String year, String month, String date);
   int checkValidNumber(String number);
   void addPortfolios(String PortfolioName);
-  Stock createStock(String sName, String quantity, String date, String month, String year,
-                   String value, String symbol);
+  Stock createStock(String sName, String quantity, String date, String month, String value,
+                    String symbol);
   void addStock(Portfolio p, Stock A) ;
 }

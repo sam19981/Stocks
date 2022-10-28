@@ -10,17 +10,17 @@ import Connections.ConnectionImpl;
 public class StockImpl implements Stock {
   private final String shareName;
   private final LocalDate purchaseDate;
-  private final float purchaseValue;
+  private float purchaseValue;
   private final float quantity;
   private final String stockSymbol;
 
-  private StockImpl(String name, LocalDate date, float value, float q,
+  private StockImpl(String name, LocalDate date, float q,
                     String symbol) {
     shareName = name;
     purchaseDate = date;
-    purchaseValue = value;
     quantity = q;
     stockSymbol = symbol;
+    purchaseValue = getValue(purchaseDate);
   }
 
   public static CustomerBuilder getBuilder() {
@@ -37,9 +37,9 @@ public class StockImpl implements Stock {
     private CustomerBuilder() {
       shareName = "";
       purchaseDate = LocalDate.now();
-      purchaseValue = 0;
       quantity = 0;
       stockSymbol = "";
+      purchaseValue = 0;
     }
 
     public CustomerBuilder shareName(String name) {
@@ -51,6 +51,7 @@ public class StockImpl implements Stock {
       this.purchaseDate = d;
       return this;
     }
+
     public CustomerBuilder purchaseValue(float v) {
       this.purchaseValue = v;
       return this;
@@ -65,7 +66,7 @@ public class StockImpl implements Stock {
     }
 
     public StockImpl create() {
-      return new StockImpl(shareName, purchaseDate, purchaseValue, quantity, stockSymbol);
+      return new StockImpl(shareName, purchaseDate, quantity, stockSymbol);
     }
   }
 
@@ -86,7 +87,7 @@ public class StockImpl implements Stock {
 
   @Override
   public float getPurchaseValue() {
-    return purchaseValue;
+    return getValue(purchaseDate);
   }
 
   @Override

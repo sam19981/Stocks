@@ -3,11 +3,13 @@
     <username>sam19981</username>
     <portfolio id="College Funds">
      <stock id="Google">
+     <symbol>GOOG</symbol>
      <cost>10</cost>
      <quantity>14</quantity>
      <time>2022/05/01</time>
      </stock>
      <stock id="Microsoft">
+          <symbol>MSFT</symbol>
           <cost>11</cost>
           <quantity>13</quantity>
           <time>2022/01/10</time>
@@ -15,13 +17,23 @@
      </portfolio>
      <portfolio id="School Funds">
           <stock id="Amazon">
+          <symbol>AMZN</symbol>
           <cost>19</cost>
           <quantity>17</quantity>
           <time>2022/05/01</time>
           </stock>
           <stock id = "Microfocus">
                <cost>11</cost>
+               <symbol>MFGP</symbol>
                <quantity>29</quantity>
+               <time>2022/01/10</time>
+               </stock>
+          </portfolio>
+     <portfolio id="College Funds">
+               <stock id ="Apple">
+               <symbol>APPL</symbol>
+               <cost>11</cost>
+               <quantity>13</quantity>
                <time>2022/01/10</time>
                </stock>
           </portfolio>

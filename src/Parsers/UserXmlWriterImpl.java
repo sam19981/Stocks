@@ -16,12 +16,10 @@ import java.io.OutputStream;
 import java.util.List;
 
 import Models.Portfolio;
-import Models.PortfolioImpl;
 import Models.Stock;
 import Models.User;
-import Models.UserImpl;
 
-public class WriterTest implements xmlWriter {
+public class UserXmlWriterImpl implements xmlWriter {
 
   @Override
   public int writeData(String File, User data) throws ParserConfigurationException {
@@ -40,11 +38,10 @@ public class WriterTest implements xmlWriter {
     Element name3;
     Element name4;
     Element name5;
+    Element name6;
     List<Portfolio> portfolioList = data.getAllPortfolios();
-    for(int i=0;i< portfolioList.size();i++)
-    {
-      Portfolio temp = portfolioList.get(i);
-       name1 = doc.createElement("portfolio");
+    for (Portfolio temp : portfolioList) {
+      name1 = doc.createElement("portfolio");
       name1.setAttribute("id", temp.getPortfolioName());
       List<Stock> temp1 = temp.getAllStocks();
       for (Stock stock : temp1) {
@@ -57,15 +54,18 @@ public class WriterTest implements xmlWriter {
         name4.setTextContent(String.valueOf(stock.getQuantity()));
         name2.appendChild(name4);
         name5 = doc.createElement("time");
-        name5.setTextContent(String.valueOf(stock.getPurchaseDate()));
+        name5.setTextContent(String.valueOf(stock.getPurchaseDate()).replace("-","/"));
         name2.appendChild(name5);
+        name6 = doc.createElement("symbol");
+        name6.setTextContent(String.valueOf(stock.getStockSymbol()));
+        name2.appendChild(name6);
         name1.appendChild(name2);
       }
       rootElement.appendChild(name1);
     }
 
     try (FileOutputStream output =
-                 new FileOutputStream("test1.txt")) {
+                 new FileOutputStream(File)) {
       writeXml(doc, output);
     } catch (IOException | TransformerException e) {
       e.printStackTrace();
