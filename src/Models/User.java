@@ -15,7 +15,7 @@ public interface User {
 
   Stock removeStock(Portfolio n, Stock a);
 
-  void addPortfolio(Portfolio n);
+  int addPortfolio(Portfolio n);
 
   void addStock(Portfolio A,Stock s);
 
@@ -26,4 +26,6 @@ public interface User {
   Portfolio deletePortfolio(String name);
 
   List<Portfolio> removeAllPortfolios();
+
+
 }

@@ -2,14 +2,26 @@ package Models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PortfolioImpl implements Portfolio{
   private final String portfolioName;
-  private final List<Stock> stocks;
+  private final Map<String, Stock> stocks;
   private PortfolioImpl(String name, List<Stock> s) {
     portfolioName = name;
-    stocks = s;
+    stocks = new HashMap<>();
+    for(Stock stock: s) {
+      if(stocks.get(stock.getStockName())!=null) {
+        stocks.replace(stocks.get(stock.getStockName()).getStockName(),
+                stocks.get(stock.getStockName()),
+                stocks.get(stock.getStockName()).increaseQuantity(stock.getQuantity()));
+      }
+      else {
+        stocks.put(stock.getStockName(), stock);
+      }
+    }
   }
 
   public static CustomerBuilder getBuilder() {
@@ -19,6 +31,11 @@ public class PortfolioImpl implements Portfolio{
   public static class CustomerBuilder {
     private String portfolioName;
     private List<Stock> stocks;
+
+    public String getportfolioName()
+    {
+      return this.portfolioName;
+    }
 
     private CustomerBuilder() {
       portfolioName = "";
@@ -31,7 +48,7 @@ public class PortfolioImpl implements Portfolio{
     }
 
     public CustomerBuilder stocks(List<Stock> s) {
-      this.stocks = s;
+      this.stocks.addAll(s);
       return this;
     }
 
@@ -52,34 +69,36 @@ public class PortfolioImpl implements Portfolio{
   }
 
   @Override
-  public List<Stock> getAllStocks() {
-    return stocks;
-  }
-
-  @Override
-  public List<Stock> getAllStock() {
-    return null;
+  public ArrayList<Stock> getAllStocks() {
+    return new ArrayList<>(stocks.values());
   }
 
   @Override
   public float getPortfolioValue(LocalDate d) {
     float total = 0;
-    for (Stock stock : stocks) {
-      total += stock.getValue(d);
+    for (Stock stock : stocks.values()) {
+      total += stock.getValue(d)*stock.getQuantity();
     }
     return total;
   }
 
   @Override
-  public void addStock(Stock A) {
-    stocks.add(A);
+  public void addStock(Stock newStock) {
+    if(stocks.get(newStock.getStockName())!=null) {
+      stocks.replace(stocks.get(newStock.getStockName()).getStockName(),
+              stocks.get(newStock.getStockName()),
+              stocks.get(newStock.getStockName()).increaseQuantity(newStock.getQuantity()));
+    }
+    else {
+      stocks.put(newStock.getStockName(), newStock);
+    }
   }
 
   @Override
   public float sellStock(Stock A) {
-    if(stocks.contains(A)) {
+    if(stocks.get(A.getStockName())!=null) {
       float res = A.getValue(LocalDate.now());
-      stocks.remove(A);
+      stocks.remove(A.getStockName());
       return res;
     }
     return -1;
@@ -94,7 +113,7 @@ public class PortfolioImpl implements Portfolio{
 
   @Override
   public Stock getStock(String A) {
-    for(Stock stock: stocks){
+    for(Stock stock: stocks.values()){
       if(stock.getStockName().equals(A)){
         return stock;
       }

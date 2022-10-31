@@ -8,20 +8,19 @@ import Connections.Connection;
 import Connections.ConnectionImpl;
 
 public class StockImpl implements Stock {
-  private final String shareName;
+  private final String stockName;
   private final LocalDate purchaseDate;
   private final float purchaseValue;
   private final float quantity;
   private final String stockSymbol;
 
-
-  private StockImpl(String name, LocalDate date, float value, float q,
-                    String symbol) {
-    shareName = name;
+  private StockImpl(String name, LocalDate date, float q,
+                    String symbol, float pValue) {
+    stockName = name;
     purchaseDate = date;
-    purchaseValue = value;
     quantity = q;
     stockSymbol = symbol;
+    purchaseValue = pValue;
   }
 
   public static CustomerBuilder getBuilder() {
@@ -29,22 +28,22 @@ public class StockImpl implements Stock {
   }
 
   public static class CustomerBuilder {
-    private String shareName;
+    private String stockName;
     private LocalDate purchaseDate;
     private float purchaseValue;
     private float quantity;
     private String stockSymbol;
 
     private CustomerBuilder() {
-      shareName = "";
-      purchaseDate = LocalDate.now();
-      purchaseValue = 0;
+      stockName = "";
+      purchaseDate = LocalDate.now().minusDays(1);
       quantity = 0;
       stockSymbol = "";
+      purchaseValue = 0;
     }
 
-    public CustomerBuilder shareName(String name) {
-      this.shareName = name;
+    public CustomerBuilder stockName(String name) {
+      this.stockName = name;
       return this;
     }
 
@@ -52,6 +51,7 @@ public class StockImpl implements Stock {
       this.purchaseDate = d;
       return this;
     }
+
     public CustomerBuilder purchaseValue(float v) {
       this.purchaseValue = v;
       return this;
@@ -66,13 +66,13 @@ public class StockImpl implements Stock {
     }
 
     public StockImpl create() {
-      return new StockImpl(shareName, purchaseDate, purchaseValue, quantity, stockSymbol);
+      return new StockImpl(stockName, purchaseDate, quantity, stockSymbol, purchaseValue);
     }
   }
 
   @Override
   public String getStockName() {
-    return shareName;
+    return stockName;
   }
 
   @Override
@@ -87,7 +87,12 @@ public class StockImpl implements Stock {
 
   @Override
   public float getPurchaseValue() {
-    return purchaseValue;
+    if(!stockSymbol.isEmpty()) {
+      return getValue(purchaseDate);
+    }
+    else{
+      return purchaseValue;
+    }
   }
 
   @Override
@@ -96,11 +101,20 @@ public class StockImpl implements Stock {
   }
 
   @Override
+  public StockImpl increaseQuantity(float i) {
+    return StockImpl.getBuilder().stockName(stockName)
+            .quantity(quantity+i).purchaseDate(purchaseDate).stockSymbol(stockSymbol).create();
+  }
+
+  @Override
   public float getValue(LocalDate d) {
     Connection c =  new ConnectionImpl();
     StringBuilder output = new StringBuilder();
     try {
-    InputStream apiData = c.fetch(stockSymbol, d);
+      InputStream apiData = c.fetch(stockSymbol, d);
+      if(apiData==null) {
+        throw new IllegalArgumentException("Invalid stock symbol provided");
+      }
       int b;
       while ((b = apiData.read()) != -1) {
         output.append((char) b);

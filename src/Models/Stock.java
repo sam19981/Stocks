@@ -1,7 +1,6 @@
 package Models;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public interface Stock {
 
@@ -16,4 +15,5 @@ public interface Stock {
   float getValue(LocalDate d);
 
   String getStockSymbol();
+  StockImpl increaseQuantity(float i);
 }

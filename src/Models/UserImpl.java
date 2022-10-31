@@ -2,34 +2,32 @@ package Models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserImpl implements User{
-  @Override
-  public Stock removeShare(Portfolio n, String a) {
-    return null;
-  }
-
-  private List<Portfolio> portFolios;
+  private Map<String, Portfolio> portFolios;
   private String userName;
+  private String password;
 
-  public UserImpl(String userName,List<Portfolio> portFolios)
+  public UserImpl(String userName,List<Portfolio> ports, String pass)
   {
     this.userName = userName;
-    this.portFolios = portFolios;
+    this.portFolios = new LinkedHashMap<>();
+    for(Portfolio portfolio: ports) {
+      portFolios.putIfAbsent(portfolio.getPortfolioName(), portfolio);
+    }
+    this.password = pass;
   }
 
-  public UserImpl()
-  {
-
+  public UserImpl() {
   }
 
   @Override
   public Portfolio getPortfolio(String portFolioName) {
-    for(Portfolio portfolio: portFolios) {
-      if(portfolio.getPortfolioName().equals(portFolioName)) {
-        return portfolio;
-      }
+    if(portFolios.get(portFolioName)!=null) {
+      return portFolios.get(portFolioName);
     }
     return null;
   }
@@ -42,7 +40,7 @@ public class UserImpl implements User{
   @Override
   public float computeAllPortFolios(LocalDate d) {
     float total = 0;
-    for(Portfolio portfolio: portFolios) {
+    for(Portfolio portfolio: portFolios.values()) {
       total+= portfolio.getPortfolioValue(d);
     }
     return total;
@@ -51,10 +49,8 @@ public class UserImpl implements User{
   @Override
   public float computePortfolioValue(String PortfolioName, LocalDate d) {
     if(d!=null) {
-      for (Portfolio portfolio : portFolios) {
-        if (portfolio.getPortfolioName().equals(PortfolioName)) {
-          return portfolio.getPortfolioValue(d);
-        }
+      if(portFolios.get(PortfolioName)!=null) {
+        return portFolios.get(PortfolioName).getPortfolioValue(d);
       }
     }
     return -1;
@@ -62,8 +58,8 @@ public class UserImpl implements User{
 
   @Override
   public Stock removeStock(Portfolio n, Stock a) {
-    if(portFolios.contains(n)){
-      for(Portfolio p: portFolios) {
+    if(portFolios.get(n.getPortfolioName())!=null){
+      for(Portfolio p: portFolios.values()) {
         if(p.equals(n)){
           p.sellStock(a);
         }
@@ -73,13 +69,19 @@ public class UserImpl implements User{
   }
 
   @Override
-  public void addPortfolio(Portfolio n) {
-    portFolios.add(n);
+  public int addPortfolio(Portfolio n) {
+    if(portFolios.get(n.getPortfolioName())==null) {
+      portFolios.put(n.getPortfolioName(), n);
+      return 0;
+    }
+    else{
+      return -1;
+    }
   }
 
   @Override
   public void addStock(Portfolio A, Stock k) {
-    for(Portfolio p: portFolios) {
+    for(Portfolio p: portFolios.values()) {
       if(p.equals(A)) {
         A.addStock(k);
       }
@@ -88,9 +90,9 @@ public class UserImpl implements User{
 
   @Override
   public float sellPortfolio(Portfolio o) {
-    if(portFolios.contains(o)) {
+    if(portFolios.get(o.getPortfolioName())!=null) {
       float res = o.getPortfolioValue(LocalDate.now());
-      portFolios.remove(o);
+      portFolios.remove(o.getPortfolioName());
       return res;
     }
     return -1;
@@ -98,13 +100,13 @@ public class UserImpl implements User{
 
   @Override
   public List<Portfolio> getAllPortfolios() {
-    return portFolios;
+    return new ArrayList<>(portFolios.values());
   }
 
   @Override
   public Portfolio deletePortfolio(String name) {
     Portfolio r = PortfolioImpl.getBuilder().create();
-    for(Portfolio p: portFolios){
+    for(Portfolio p: portFolios.values()){
       if(p.getPortfolioName().equals(name)){
         r = p;
         sellPortfolio(p);
@@ -128,16 +130,25 @@ public class UserImpl implements User{
   {
     String username;
     List<Portfolio> portfolioList;
+    String password;
 
     userBuilder()
     {
       username ="";
       portfolioList = new ArrayList<>();
+      password = "";
     }
+
 
    public userBuilder setUserName(String username)
     {
       this.username = username;
+      return this;
+    }
+
+    public userBuilder setPassword(String password)
+    {
+      this.password = password;
       return this;
     }
 
@@ -154,8 +165,12 @@ public class UserImpl implements User{
     }
 
     public UserImpl create(){
-      return new UserImpl(this.username,this.portfolioList);
+      if(this.username.equals("")) {
+        return null;
+      }
+      return new UserImpl(this.username, this.portfolioList, this.password);
     }
 
   }
+
 }

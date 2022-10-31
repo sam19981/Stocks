@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <user>
-    <username>karthikjb10</username>
-    <portfolio id="Emergency">
-        <stock id="GOOG">
+    <username>emand</username>
+    <portfolio id="Port1">
+        <stock id="Google">
             <cost>53.616</cost>
-            <quantity>10.0</quantity>
-            <time>2020-03-20</time>
+            <quantity>100.0</quantity>
+            <time>2020/03/20</time>
             <symbol>GOOG</symbol>
         </stock>
     </portfolio>

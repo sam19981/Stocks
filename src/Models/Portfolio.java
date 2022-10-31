@@ -1,13 +1,13 @@
 package Models;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 
 public interface Portfolio {
 
   String getPortfolioName();
 
-  List<Stock> getAllStocks();
+  ArrayList<Stock> getAllStocks();
 
   float getPortfolioValue(LocalDate d);
 

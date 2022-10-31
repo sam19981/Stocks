@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<user>
+    <username>sam19981</username>
+    <portfolio id="College Funds">
+        <stock id="Google">
+            <cost>116.7465</cost>
+            <quantity>14.0</quantity>
+            <time>2022/05/05</time>
+            <symbol>GOOG</symbol>
+        </stock>
+        <stock id="Apple">
+            <cost>177.57</cost>
+            <quantity>13.0</quantity>
+            <time>2022/01/01</time>
+            <symbol>AAPL</symbol>
+        </stock>
+        <stock id="Microsoft">
+            <cost>336.32</cost>
+            <quantity>13.0</quantity>
+            <time>2022/01/01</time>
+            <symbol>MSFT</symbol>
+        </stock>
+    </portfolio>
+    <portfolio id="School Funds">
+        <stock id="Microfocus">
+            <cost>5.57</cost>
+            <quantity>29.0</quantity>
+            <time>2022/01/01</time>
+            <symbol>MFGP</symbol>
+        </stock>
+        <stock id="Amazon">
+            <cost>116.407</cost>
+            <quantity>17.0</quantity>
+            <time>2022/05/05</time>
+            <symbol>AMZN</symbol>
+        </stock>
+    </portfolio>
+    <portfolio id="Port1">
+        <stock id="Google">
+            <cost>67.0695</cost>
+            <quantity>120.0</quantity>
+            <time>2020/03/03</time>
+            <symbol>GOOG</symbol>
+        </stock>
+    </portfolio>
+</user>
