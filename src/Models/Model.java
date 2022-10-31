@@ -16,19 +16,20 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import Parsers.UserXmlReaderImpl;
 import Parsers.UserXmlWriterImpl;
+import Utilities.Utility;
 
 public class Model implements IModel {
   private final UserXmlWriterImpl write;
   private final List<User> users;
   private final HashSet<String> userNames;
   private User currentUser;
-  private String FileLink;
+
+  private final HashSet<String> symbols = new HashSet<>();
 
   public Model() {
     write = new UserXmlWriterImpl();
     userNames = new HashSet<>();
     users = new ArrayList<>();
-
     try (BufferedReader br = new BufferedReader(new FileReader("UserDetails.csv"))) {
       String line;
       while ((line = br.readLine()) != null) {
@@ -36,7 +37,11 @@ public class Model implements IModel {
         userNames.add(Arrays.asList(values).get(0)
                 .replaceAll("[^\\p{L}\\p{N}\\p{Z}\\p{Sm}\\p{Sc}\\p{Sk}\\p{Pi}\\p{Pf}\\p{Pc}\\p{Mc}]",""));
       }
-    } catch (IOException e) {
+      List<String>symbolList = Utility.loadCsvData("stockDirectory/StockSymbols.csv");
+      for (String v : symbolList) {
+        String[] symbol = v.split(",");
+        symbols.add(symbol[0]);
+    }} catch (IOException e) {
       throw new RuntimeException(e);
     }
 
@@ -66,19 +71,21 @@ public class Model implements IModel {
   }
 
   public int loadData(String username, String password) {
-    try (BufferedReader br = new BufferedReader(new FileReader("UserDetails.csv"))) {
+    try  {
+      List<String> fileData = Utility.loadCsvData("UserDetails.csv");
       String line;
-      while ((line = br.readLine()) != null) {
+      for (String fileDatum : fileData) {
+        line = fileDatum;
         String[] values = line.split(",");
-        if(Arrays.asList(values).get(0)
-                .replaceAll("[^\\p{L}\\p{N}\\p{Z}\\p{Sm}\\p{Sc}\\p{Sk}\\p{Pi}\\p{Pf}\\p{Pc}\\p{Mc}]","")
-                .equals(username)){
-          if(Arrays.asList(values).get(1)
-                  .replaceAll("[^\\p{L}\\p{N}\\p{Z}\\p{Sm}\\p{Sc}\\p{Sk}\\p{Pi}\\p{Pf}\\p{Pc}\\p{Mc}]","")
+        if (Arrays.asList(values).get(0)
+                .replaceAll("[^\\p{L}\\p{N}\\p{Z}\\p{Sm}\\p{Sc}\\p{Sk}\\p{Pi}\\p{Pf}\\p{Pc}\\p{Mc}]", "")
+                .equals(username)) {
+          if (Arrays.asList(values).get(1)
+                  .replaceAll("[^\\p{L}\\p{N}\\p{Z}\\p{Sm}\\p{Sc}\\p{Sk}\\p{Pi}\\p{Pf}\\p{Pc}\\p{Mc}]", "")
                   .equals(password)) {
-            FileLink = Arrays.asList(values).get(values.length - 1);
+            String fileLink = Arrays.asList(values).get(values.length - 1);
             UserXmlReaderImpl r = new UserXmlReaderImpl();
-            currentUser = r.readData(FileLink, password);
+            currentUser = r.readData(fileLink, password);
           }
         }
       }
@@ -158,15 +165,12 @@ public class Model implements IModel {
   @Override
   public LocalDate createValidDate(String year, String month, String date) {
     int y = Integer.parseInt(year);
-    if(y<1970 || y>2022) {
-      return null;
-    }
+
     int m = Integer.parseInt(month);
-    if(m<1 || m>12) {
-      return null;
-    }
+
     int d = Integer.parseInt(date);
-    if(d<1 || d>31) {
+    if(!Utility.checkValidDate(y,m,d))
+    {
       return null;
     }
     return LocalDate.of(y, m, d);
@@ -185,6 +189,14 @@ public class Model implements IModel {
     Portfolio p = PortfolioImpl.getBuilder().portfolioName(PortfolioName).create();
     currentUser.addPortfolio(p);
   }
+
+  public int validateStocksymbol(String symbol) {
+      if (!symbols.contains(symbol)) {
+        return 0;
+      }
+      return 1;
+    }
+
 
   @Override
   public Stock createStock(String sName, String quantity, String date, String month, String year, String symbol) {

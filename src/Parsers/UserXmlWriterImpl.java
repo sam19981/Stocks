@@ -46,7 +46,7 @@ public class UserXmlWriterImpl implements xmlWriter {
       List<Stock> temp1 = temp.getAllStocks();
       for (Stock stock : temp1) {
         name2 = doc.createElement("stock");
-        name2.setAttribute("id", stock.getStockSymbol());
+        name2.setAttribute("id", stock.getStockName());
         name3 = doc.createElement("cost");
         name3.setTextContent(String.valueOf(stock.getPurchaseValue()));
         name2.appendChild(name3);

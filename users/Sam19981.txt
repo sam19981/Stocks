@@ -34,7 +34,7 @@
                <symbol>APPL</symbol>
                <cost>11</cost>
                <quantity>13</quantity>
-               <time>2022/01/10</time>
+               <time>2021/01/10</time>
                </stock>
           </portfolio>
 </user>

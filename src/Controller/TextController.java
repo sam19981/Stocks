@@ -1,5 +1,6 @@
 package Controller;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
@@ -13,14 +14,14 @@ public class TextController implements IController{
     private final IView view;
     private final IModel model;
 
-    public TextController(IModel model,InputStream in,IView view) {
+    public TextController(IModel model,Readable in,IView view) {
         this.model = model;
         this.view = view;
-        this.in = new Scanner(in);
+        this.in = new Scanner(System.setIn();));
     }
 
     @Override
-    public void go() {
+    public void go() throws IOException {
         boolean mainQuit = false;
         while(!mainQuit) {
             view.showPreLoginOptions();
@@ -75,7 +76,7 @@ public class TextController implements IController{
         }
     }
 
-    public void getInputStyle() {
+    public void getInputStyle() throws IOException {
         String style = in.nextLine();
         switch(style) {
             case "F":
@@ -93,7 +94,7 @@ public class TextController implements IController{
     }
 
     @Override
-    public void getPortfolioInformation(){
+    public void getPortfolioInformation() throws IOException {
         boolean quit = false;
         while(!quit) {
             view.getNoPortfolios();
@@ -115,7 +116,7 @@ public class TextController implements IController{
     }
 
     @Override
-    public void getStocksInformation() {
+    public void getStocksInformation() throws IOException {
         boolean mainQuit = false;
         String year="", month="", date="";
         String quantity = "0";
@@ -183,6 +184,11 @@ public class TextController implements IController{
                         }
                         view.pleaseEnterString("stock symbol");
                         String symbol = in.nextLine();
+                        while(model.validateStocksymbol(symbol)==0)
+                        {
+                            view.printString("Please Enter a valid Symbol");
+                            symbol = in.nextLine();
+                        }
                         model.addStock(p, model.createStock(sName, quantity,
                                 date, month, year, symbol));
                         mainQuit = true;
@@ -193,7 +199,7 @@ public class TextController implements IController{
     }
 
     @Override
-    public void performUserOperation() {
+    public void performUserOperation() throws IOException {
         boolean mainQuit = false;
         while (!mainQuit) {
             view.showUserOperations();

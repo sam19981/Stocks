@@ -16,4 +16,5 @@ public interface IModel {
   Stock createStock(String sName, String quantity, String date, String month, String value,
                     String symbol);
   void addStock(Portfolio p, Stock A) ;
+  int validateStocksymbol(String symbol);
 }

@@ -20,7 +20,9 @@ public class StockImpl implements Stock {
     purchaseDate = date;
     quantity = q;
     stockSymbol = symbol;
-    purchaseValue = getValue(purchaseDate);
+    purchaseValue = 0;
+//            getValue(purchaseDate);
+
   }
 
   public static CustomerBuilder getBuilder() {
