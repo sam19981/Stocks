@@ -1,4 +1,4 @@
-package Parsers;
+package parsers;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -6,7 +6,11 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -15,14 +19,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import Models.Portfolio;
-import Models.Stock;
-import Models.User;
+import model.Portfolio;
+import model.Stock;
+import model.User;
 
-public class UserXmlWriterImpl implements xmlWriter {
+/**
+ *  Class responsible for writing user object to the file in the xml format.
+ */
+public class UserXmlWriterImpl implements XmlWriter {
 
   @Override
-  public int writeData(String File, User data) throws ParserConfigurationException {
+  public int writeData(String file, User data) throws ParserConfigurationException {
     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -54,7 +61,7 @@ public class UserXmlWriterImpl implements xmlWriter {
         name4.setTextContent(String.valueOf(stock.getQuantity()));
         name2.appendChild(name4);
         name5 = doc.createElement("time");
-        name5.setTextContent(String.valueOf(stock.getPurchaseDate()).replace("-","/"));
+        name5.setTextContent(String.valueOf(stock.getPurchaseDate()).replace("-", "/"));
         name2.appendChild(name5);
         name6 = doc.createElement("symbol");
         name6.setTextContent(String.valueOf(stock.getStockSymbol()));
@@ -65,7 +72,7 @@ public class UserXmlWriterImpl implements xmlWriter {
     }
 
     try (FileOutputStream output =
-                 new FileOutputStream(File)) {
+                 new FileOutputStream(file)) {
       writeXml(doc, output);
     } catch (IOException | TransformerException e) {
       e.printStackTrace();

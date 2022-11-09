@@ -1,4 +1,4 @@
-package Models;
+package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -6,19 +6,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PortfolioImpl implements Portfolio{
+/**
+ * class to store all the portfolio data associated to a user.
+ */
+public class PortfolioImpl implements Portfolio {
   private final String portfolioName;
   private final Map<String, Stock> stocks;
+
   private PortfolioImpl(String name, List<Stock> s) {
     portfolioName = name;
     stocks = new HashMap<>();
-    for(Stock stock: s) {
-      if(stocks.get(stock.getStockName())!=null) {
+    for (Stock stock : s) {
+      if (stocks.get(stock.getStockName()) != null) {
         stocks.replace(stocks.get(stock.getStockName()).getStockName(),
                 stocks.get(stock.getStockName()),
                 stocks.get(stock.getStockName()).increaseQuantity(stock.getQuantity()));
-      }
-      else {
+      } else {
         stocks.put(stock.getStockName(), stock);
       }
     }
@@ -28,12 +31,15 @@ public class PortfolioImpl implements Portfolio{
     return new CustomerBuilder();
   }
 
+  /**
+   * Builder to set all the fields of a portfolio to class
+   * without any errors.
+   */
   public static class CustomerBuilder {
     private String portfolioName;
     private List<Stock> stocks;
 
-    public String getportfolioName()
-    {
+    public String getportfolioName() {
       return this.portfolioName;
     }
 
@@ -52,13 +58,21 @@ public class PortfolioImpl implements Portfolio{
       return this;
     }
 
-    public CustomerBuilder addStocks(Stock s)
-    {
+    public CustomerBuilder addStocks(Stock s) {
       this.stocks.add(s);
       return this;
     }
 
+    /**
+     * Creates a PortfolioImpl object after setting all its fields.
+     * Returns PortfolioImpl object with all its fields set with.
+     * default values or values specified by the user.
+     * @return - returns PortfolioImpl object.
+     */
     public PortfolioImpl create() {
+      if (portfolioName.equals("")) {
+        return null;
+      }
       return new PortfolioImpl(portfolioName, stocks);
     }
   }
@@ -77,28 +91,33 @@ public class PortfolioImpl implements Portfolio{
   public float getPortfolioValue(LocalDate d) {
     float total = 0;
     for (Stock stock : stocks.values()) {
-      total += stock.getValue(d)*stock.getQuantity();
+      float value = 0;
+      try {
+        value = stock.getValue(d);
+      } catch (Exception e) {
+        value = 0;
+      }
+      total += value * stock.getQuantity();
     }
     return total;
   }
 
   @Override
   public void addStock(Stock newStock) {
-    if(stocks.get(newStock.getStockName())!=null) {
+    if (stocks.get(newStock.getStockName()) != null) {
       stocks.replace(stocks.get(newStock.getStockName()).getStockName(),
               stocks.get(newStock.getStockName()),
               stocks.get(newStock.getStockName()).increaseQuantity(newStock.getQuantity()));
-    }
-    else {
+    } else {
       stocks.put(newStock.getStockName(), newStock);
     }
   }
 
   @Override
-  public float sellStock(Stock A) {
-    if(stocks.get(A.getStockName())!=null) {
-      float res = A.getValue(LocalDate.now());
-      stocks.remove(A.getStockName());
+  public float sellStock(Stock stockVal) {
+    if (stocks.get(stockVal.getStockName()) != null) {
+      float res = stockVal.getValue(LocalDate.now());
+      stocks.remove(stockVal.getStockName());
       return res;
     }
     return -1;
@@ -112,9 +131,9 @@ public class PortfolioImpl implements Portfolio{
   }
 
   @Override
-  public Stock getStock(String A) {
-    for(Stock stock: stocks.values()){
-      if(stock.getStockName().equals(A)){
+  public Stock getStock(String stockName) {
+    for (Stock stock : stocks.values()) {
+      if (stock.getStockName().equals(stockName)) {
         return stock;
       }
     }

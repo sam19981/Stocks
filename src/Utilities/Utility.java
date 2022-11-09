@@ -1,35 +1,31 @@
-package Utilities;
+package utilities;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains all the utility functions which can be reused throughout the program.
+ */
 public class Utility {
 
-  public static boolean checkValidDate(Integer year, Integer month, Integer day) {
-    if(year<1970 || year>2022) {
-      return false;
+  /**
+   * Reads the CSV data from the file returns it for further use.
+   * @param fileName - The filename from which the data has to be read.
+   * @return - returns the data as a list of strings.
+   * @throws IOException - The exception is thrown when the
+   *                       file is ot present or cannot be read.
+   */
+  public static List<String> loadCsvData(String fileName) throws IOException {
+    BufferedReader br = new BufferedReader(new FileReader(fileName));
+    List<String> values = new ArrayList<>();
+    String line;
+    while ((line = br.readLine()) != null) {
+      values.add(line);
     }
-    if(month<1 || month>12) {
-      return false;
-    }
-    if(day<1 || day>31) {
-      return true;
-    }
-    return true;
+    return values;
   }
-
- public static List<String> loadCsvData(String fileName) throws IOException {
-   BufferedReader br = new BufferedReader(new FileReader(fileName));
-   List<String> values = new ArrayList<>();
-   String line;
-   while ((line = br.readLine()) != null) {
-     values.add(line);
-   }
-     return values;
- }
 
 }
