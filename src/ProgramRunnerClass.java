@@ -1,10 +1,6 @@
-import java.io.InputStream;
-import java.time.LocalDate;
+import java.io.IOException;
 
-import connection.Connection;
-import connection.ConnectionImpl;
 import controller.IController;
-
 import controller.TextController;
 import model.IModel;
 import model.Model;
@@ -23,7 +19,7 @@ public class ProgramRunnerClass {
    *
    * @param args - input arguments if any.
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     IModel model = new Model();
     IView view = new TextView(System.out);
     IController controller = new TextController(model, System.in, view);

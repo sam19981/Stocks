@@ -303,7 +303,7 @@ public class TextController implements IController {
         case "C":
           boolean quit = false;
           while (!quit) {
-            view.displayPortfolios(model.getUserPortFolios());
+            view.displayAllPortfolioNames(model.getUserPortFolios());
             view.fetchPortfolioForComputation();
             String portfolioName = in.nextLine();
             while (portfolioName.equals("")) {

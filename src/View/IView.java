@@ -64,6 +64,8 @@ public interface IView {
    */
   void displayPortfolioResults(float result);
 
+  void displayAllPortfolioNames(List<Portfolio> portfolios);
+
   /**
    * Asks the user which portfolio's value they want to compute.
    */

@@ -1,11 +1,11 @@
 package model;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 
+import connection.AlphaVantageImpl;
 import connection.Connection;
-import connection.ConnectionImpl;
+import utilities.Utility;
 
 /**
  * Class to store all the details of stocks
@@ -141,7 +141,7 @@ public class StockImpl implements Stock {
             .quantity(quantity + i).purchaseDate(purchaseDate).stockSymbol(stockSymbol).create();
   }
 
-  @Override
+  /*@Override
   public float getValue(LocalDate d) {
     Connection c = new ConnectionImpl();
     StringBuilder output = new StringBuilder();
@@ -159,6 +159,20 @@ public class StockImpl implements Stock {
     }
     String[] res = output.toString().split(",");
     return Float.parseFloat(res[10]);
+  }*/
+
+  @Override
+  public float getValue(LocalDate date) {
+    Connection connection = new AlphaVantageImpl();
+    InputStream in;
+    float value = 0;
+    try {
+      in = connection.fetch(stockSymbol, date);
+      value = Utility.readOnDate(Utility.readJSONData(in), date);
+    }catch (Exception e) {
+      throw new IllegalArgumentException("No price data found for " + stockSymbol);
+    }
+    return value;
   }
 
 }

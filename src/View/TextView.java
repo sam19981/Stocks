@@ -102,7 +102,14 @@ public class TextView implements IView {
   @Override
   public void displayPortfolioResults(float result) {
     out.println("------------------------------------------------");
-    out.println("Total" + String.format("%19s", "| " + result));
+    out.println("Total" + String.format("%22s", "| " + result));
+  }
+
+  @Override
+  public void displayAllPortfolioNames(List<Portfolio> portfolios) {
+    for (Portfolio p : portfolios) {
+      System.out.println(p.getPortfolioName());
+    }
   }
 
   public void fetchPortfolioForComputation() {

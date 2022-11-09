@@ -116,7 +116,13 @@ public class PortfolioImpl implements Portfolio {
   @Override
   public float sellStock(Stock stockVal) {
     if (stocks.get(stockVal.getStockName()) != null) {
-      float res = stockVal.getValue(LocalDate.now());
+      float res = 0;
+      try {
+        res = stockVal.getValue(LocalDate.now());
+      }
+      catch(Exception e) {
+        res = 0;
+      }
       stocks.remove(stockVal.getStockName());
       return res;
     }
